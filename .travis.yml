@@ -4,7 +4,7 @@ after_success:
     - 'docker build -t matusdubrava/multi-server ./server'
     - 'docker build -t matusdubrava/multi-nginx ./nginx'
     - 'docker build -t matusdubrava/multi-worker ./worker'
-    - 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" | --password-stdin'
+    - 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin'
     - 'docker push matusdubrava/multi-client'
     - 'docker push matusdubrava/multi-server'
     - 'docker push matusdubrava/multi-nginx'
