@@ -11,7 +11,7 @@ after_success:
     - 'docker push matusdubrava/multi-worker'
 before_install:
     - 'docker build -t matusdubrava/react-test -f ./client/Dockerfile.dev ./client'
-scripts:
+script:
     - 'docker run matusdubrava/react-test npm run test -- --coverage'
 services:
     - docker
