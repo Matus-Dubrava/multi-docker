@@ -1,21 +1,18 @@
-sudo: required
+---
+after_success:
+    - 'docker build -t matusdubrava/multi-client ./client'
+    - 'docker build -t matusdubrava/multi-server ./server'
+    - 'docker build -t matusdubrava/multi-nginx ./nginx'
+    - 'docker build -t matusdubrava/multi-worker ./worker'
+    - 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" | --password-stdin'
+    - 'docker push matusdubrava/multi-client'
+    - 'docker push matusdubrava/multi-server'
+    - 'docker push matusdubrava/multi-nginx'
+    - 'docker push matusdubrava/multi-worker'
+before_install:
+    - 'docker build -t matusdubrava/react-test -f ./client/Dockerfile.dev ./client'
+scripts:
+    - 'docker run matusdubrava/react-test npm run test -- --coverage'
 services:
     - docker
-
-before_install:
-    - docker build -t matusdubrava/react-test -f ./client/Dockerfile.dev ./client
-
-scripts:
-    - docker run matusdubrava/react-test npm run test -- --coverage
-
-after_success:
-    - docker build -t matusdubrava/multi-client ./client
-    - docker build -t matusdubrava/multi-server ./server
-    - docker build -t matusdubrava/multi-nginx ./nginx
-    - docker build -t matusdubrava/multi-worker ./worker
-    # Log in to the docker CLI
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" | --password-stdin
-    - docker push matusdubrava/multi-client
-    - docker push matusdubrava/multi-server
-    - docker push matusdubrava/multi-nginx
-    - docker push matusdubrava/multi-worker
+sudo: required
